@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DEVKRAFT — Technical Collective | Dr. D. Y. Patil Institute of Technology, Pimpri, Pune</title>
+  <meta name="description" content="DevKraft is a student-led technical collective at Dr. D. Y. Patil Institute of Technology, Pimpri, Pune. BUILD. BREAK. COMPETE. CREATE." />
+  <meta name="keywords" content="DevKraft, DYPIT Pune, Technical Club, Hackathons, DevClash, DevTalks, DevChef, Software Engineering" />
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="DEVKRAFT — Technical Collective" />
+  <meta property="og:description" content="CODE IS THE MEDIUM. BUILDING IS THE CULTURE. Dr. D. Y. Patil Institute of Technology, Pimpri, Pune." />
+  <meta property="og:type" content="website" />
+
+  <!-- Google & Editorial Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@500;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN & Custom Orange/Black Tokens -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#060608',
+            'surface-dark': '#0d0d12',
+            'surface-card': '#131318',
+            'border-subtle': '#24242e',
+            'border-strong': '#3d3d4e',
+            orange: {
+              DEFAULT: '#FF5500',
+              500: '#FF5500',
+              600: '#E64A00',
+            },
+            amber: {
+              DEFAULT: '#FFAA00',
+              500: '#FFAA00',
+            },
+            paper: '#F8F8FA',
+            'paper-secondary': '#C4C4D4',
+            'text-dim': '#848496',
+            'text-muted': '#585868',
+          },
+          fontFamily: {
+            syne: ['Syne', 'sans-serif'],
+            space: ['Space Grotesk', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-obsidian text-paper selection:bg-orange selection:text-black overflow-x-hidden">
+
+  <!-- PRELOADER INITIALIZATION SCREEN -->
+  <div id="preloader" class="preloader-overlay">
+    <div class="preloader-content">
+      <div class="preloader-header">
+        <span class="preloader-tag">// DEVKRAFT_BOOT_SYSTEM [DYPIT_PUNE]</span>
+        <span id="preload-counter" class="preloader-percent">000%</span>
+      </div>
+      <div class="preloader-ascii">
+   ___  _______  _____  ___  ___ _____ ___ 
+  / _ \/ __/ _ \/ //_/ _ \/ _ / __// __/ 
+ / // / _// // / ,&lt; / , _/ __/ _/ / _/   
+/____/___/____/_/|_/_/|_/_/ /_/  /_/     
+      </div>
+      <div class="preloader-progress-track">
+        <div id="preload-bar" class="preloader-progress-fill"></div>
+      </div>
+      <div class="preloader-subtext">INITIALIZING KINETIC SUBSYSTEMS • PIMPRI [18.6298° N, 73.7997° E]</div>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE CANVAS BACKGROUND -->
+  <canvas id="bg-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+  <!-- SUBTLE SCANLINE OVERLAY -->
+  <div class="scanlines pointer-events-none fixed inset-0 z-10 opacity-30"></div>
+
+  <!-- FLOATING TECHNICAL HUD HEADER -->
+  <header class="hud-header fixed top-0 left-0 w-full z-40 px-3.5 sm:px-6 md:px-8 py-2.5 sm:py-3.5 border-b border-border-subtle backdrop-blur-md bg-obsidian/90 flex items-center justify-between">
+    <!-- Brand / Monogram -->
+    <a href="#" class="brand-link flex items-center gap-2.5 sm:gap-3 group">
+      <div class="brand-monogram font-bold text-xs sm:text-sm">DK</div>
+      <div class="brand-meta flex flex-col">
+        <span class="brand-title font-syne font-black tracking-wider text-xs sm:text-sm text-white group-hover:text-orange transition-colors">DEVKRAFT®</span>
+        <span class="brand-sub font-mono text-[9px] sm:text-[10px] text-text-dim">DYPIT • PIMPRI • PUNE</span>
+      </div>
+    </a>
+
+    <!-- Center Coordinates & IST Clock -->
+    <div class="hidden lg:flex items-center gap-6 font-mono text-xs text-text-dim">
+      <div class="flex items-center gap-2">
+        <span class="status-indicator"></span>
+        <span class="text-white font-medium">SYS.ACTIVE</span>
+      </div>
+      <div class="hud-divider">/</div>
+      <div>18.6298° N, 73.7997° E</div>
+      <div class="hud-divider">/</div>
+      <div id="pune-clock" class="text-orange font-bold">--:--:-- IST</div>
+    </div>
+
+    <!-- Navigation & Audio Control -->
+    <div class="flex items-center gap-2 sm:gap-3 md:gap-5">
+      <button id="audio-toggle-btn" class="hud-btn flex items-center gap-1.5 sm:gap-2 font-mono text-[11px] sm:text-xs px-2 sm:px-2.5 py-1.5 border border-border-subtle hover:border-orange transition-all">
+        <span>🔊</span>
+        <span id="audio-status" class="hidden sm:inline text-text-dim">MUTE [OFF]</span>
+      </button>
+
+      <nav class="hidden md:flex items-center gap-5 font-mono text-xs">
+        <a href="#manifesto" class="nav-link text-text-dim hover:text-white transition-colors" data-scramble>MANIFESTO</a>
+        <a href="#events" class="nav-link text-text-dim hover:text-white transition-colors" data-scramble>EVENTS</a>
+        <a href="#terminal-section" class="nav-link text-text-dim hover:text-white transition-colors" data-scramble>TERMINAL</a>
+      </nav>
+
+      <button data-join-trigger class="magnetic-btn brutal-btn-sm font-mono text-[11px] sm:text-xs font-bold bg-orange text-black px-3 sm:px-4 py-1.5 sm:py-2 hover:bg-white transition-all">
+        <span>JOIN ↗</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN VIEWPORT -->
+  <main class="relative z-20 pt-16 sm:pt-20">
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="hero-section min-h-[90vh] sm:min-h-[92vh] flex flex-col justify-between px-4 sm:px-8 md:px-10 lg:px-16 pt-6 sm:pt-8 pb-10 sm:pb-12 border-b border-border-subtle relative overflow-hidden">
+      
+      <!-- Top Eyebrow & College Affiliation -->
+      <div class="hero-eyebrow flex flex-wrap items-center justify-between gap-2 sm:gap-4 font-mono text-[10px] sm:text-xs text-text-dim border-b border-border-subtle/50 pb-3 sm:pb-4">
+        <div class="flex items-center gap-2">
+          <span class="text-orange font-bold">»</span>
+          <span class="tracking-wider uppercase">DR. D. Y. PATIL INSTITUTE OF TECHNOLOGY • PIMPRI • PUNE</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="badge-pill font-mono text-[9px] sm:text-[10px]">SPEC: GEN-Z / BRUTALIST</span>
+          <span class="hidden sm:inline text-text-dim">EST. 2024 // ACTIVE</span>
+        </div>
+      </div>
+
+      <!-- Centerpiece Kinetic Oversized Typography -->
+      <div class="hero-typography-container my-auto py-8">
+        <div class="hero-giant-text-wrapper">
+          <h1 class="hero-giant-title font-syne font-black uppercase leading-[0.82] tracking-tighter select-none">
+            <span class="title-line block text-white hover:text-orange transition-colors" data-scramble>DEV</span>
+            <span class="title-line block text-transparent stroke-white hover:text-white hover:stroke-transparent transition-all flex items-baseline gap-2 md:gap-4">
+              <span data-scramble>KRAFT</span>
+              <span class="text-orange text-2xl md:text-5xl font-mono align-super font-bold">®</span>
+            </span>
+          </h1>
+        </div>
+
+        <!-- Creed & Supporting Statement -->
+        <div class="hero-creed-grid grid grid-cols-1 lg:grid-cols-12 gap-6 mt-8 pt-6 border-t border-border-subtle items-center">
+          <div class="lg:col-span-4">
+            <div class="hero-creed-statement font-mono text-base md:text-lg font-bold text-orange tracking-tight">
+              BUILD. BREAK. COMPETE. CREATE.
+            </div>
+            <div class="font-mono text-xs text-text-dim mt-1">
+              CODE IS THE MEDIUM. BUILDING IS THE CULTURE.
+            </div>
+          </div>
+          
+          <div class="lg:col-span-5">
+            <p class="font-space text-sm md:text-base text-paper-secondary leading-relaxed">
+              A student-driven technical community turning bold ideas into code, products, and competitive podiums.
+            </p>
+          </div>
+
+          <!-- CTAs -->
+          <div class="lg:col-span-3 flex flex-col sm:flex-row lg:flex-col gap-3 justify-end">
+            <a href="#events" class="magnetic-btn brutal-btn-primary flex items-center justify-between px-5 py-3.5 bg-orange text-black font-mono text-xs font-bold hover:bg-white transition-all">
+              <span>EXPLORE DEVKRAFT ↓</span>
+              <span class="arrow">↓</span>
+            </a>
+            <a href="#events" data-event-trigger="devclash" class="magnetic-btn brutal-btn-outline flex items-center justify-between px-5 py-3.5 border border-border-strong text-white font-mono text-xs hover:border-orange hover:text-orange transition-all">
+              <span>DEVCLASH 24H ↗</span>
+              <span class="arrow">↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Bottom Stats & Micro Telemetry -->
+      <div class="hero-footer-bar grid grid-cols-2 sm:grid-cols-4 gap-4 font-mono text-xs pt-4 border-t border-border-subtle/50 text-text-dim">
+        <div>
+          <span class="block text-[10px] text-text-muted">LOCATION</span>
+          <span class="text-white font-medium">PIMPRI, PUNE, IN</span>
+        </div>
+        <div>
+          <span class="block text-[10px] text-text-muted">HACKATHONS WON</span>
+          <span class="text-orange font-bold">38+ PODIUMS</span>
+        </div>
+        <div>
+          <span class="block text-[10px] text-text-muted">LINES DEPLOYED</span>
+          <span class="text-white font-medium">480,000+ LOC</span>
+        </div>
+        <div class="text-right sm:text-left">
+          <span class="block text-[10px] text-text-muted">STATUS</span>
+          <span class="text-amber font-bold">● RECRUITING CADETS</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== HIGH-ENERGY MARQUEE TAPE ==================== -->
+    <div class="marquee-tape py-3 bg-orange text-black font-mono font-black text-xs md:text-sm uppercase tracking-widest overflow-hidden border-y border-black">
+      <div class="marquee-track flex whitespace-nowrap gap-8">
+        <span>// CODE IS THE MEDIUM</span>
+        <span>•</span>
+        <span>BUILDING IS THE CULTURE</span>
+        <span>•</span>
+        <span>ZERO BOILERPLATE</span>
+        <span>•</span>
+        <span>DEVCLASH 24H</span>
+        <span>•</span>
+        <span>DEVTALKS</span>
+        <span>•</span>
+        <span>DEVCHEF</span>
+        <span>•</span>
+        <span>DR. DYPIT PUNE</span>
+        <span>•</span>
+        <span>SHIP OR DIE</span>
+        <span>•</span>
+        <span>// CODE IS THE MEDIUM</span>
+        <span>•</span>
+        <span>BUILDING IS THE CULTURE</span>
+        <span>•</span>
+        <span>DEVCLASH 24H</span>
+        <span>•</span>
+        <span>DEVTALKS</span>
+        <span>•</span>
+        <span>DEVCHEF</span>
+      </div>
+    </div>
+
+    <!-- ==================== MANIFESTO & 4 PILLARS ==================== -->
+    <section id="manifesto" class="manifesto-section px-4 md:px-10 lg:px-16 py-20 border-b border-border-subtle">
+      <div class="section-label-bar flex items-center justify-between mb-12 font-mono text-xs text-text-dim">
+        <div class="flex items-center gap-2">
+          <span class="text-orange">01 //</span>
+          <span class="uppercase tracking-wider text-white">THE MANIFESTO & PILLARS</span>
+        </div>
+        <span>ARCHITECTURAL CHARTER</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div class="lg:col-span-5">
+          <h2 class="font-syne font-black text-3xl md:text-5xl text-white uppercase leading-tight tracking-tight">
+            AN ENGINE FOR <span class="text-orange underline decoration-2 underline-offset-4">BUILDERS</span>.
+          </h2>
+          <p class="font-space text-sm md:text-base text-paper-secondary mt-5 leading-relaxed">
+            We reject boilerplate academia in favor of rapid execution, high-leverage software architectures, and competitive mastery.
+          </p>
+          <div class="mt-6 p-4 border border-border-subtle bg-surface-dark font-mono text-xs text-text-dim flex flex-col gap-1.5">
+            <div class="flex items-center justify-between text-white font-bold">
+              <span>CORE TENET</span>
+              <span class="text-orange">100% PRODUCTION-READY</span>
+            </div>
+            <p>If it doesn’t compile, ship, or solve real problems, it doesn’t leave staging.</p>
+          </div>
+        </div>
+
+        <!-- 4 Asymmetric Pillars -->
+        <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="pillar-card p-5 border border-border-subtle hover:border-orange transition-all group bg-surface-card">
+            <div class="font-mono text-xs text-orange mb-2">WING_01</div>
+            <h3 class="font-syne font-bold text-base text-white group-hover:text-orange transition-colors">PRODUCT ENGINEERING</h3>
+            <p class="font-space text-xs text-text-dim mt-1.5 leading-relaxed">
+              Shipping distributed apps, WebGL graphics, and AI agent pipelines.
+            </p>
+          </div>
+
+          <div class="pillar-card p-5 border border-border-subtle hover:border-amber transition-all group bg-surface-card">
+            <div class="font-mono text-xs text-amber mb-2">WING_02</div>
+            <h3 class="font-syne font-bold text-base text-white group-hover:text-amber transition-colors">ALGORITHMIC COMBAT</h3>
+            <p class="font-space text-xs text-text-dim mt-1.5 leading-relaxed">
+              Weekly competitive DSA duels, graph topologies, and speed rounds.
+            </p>
+          </div>
+
+          <div class="pillar-card p-5 border border-border-subtle hover:border-orange transition-all group bg-surface-card">
+            <div class="font-mono text-xs text-orange mb-2">WING_03</div>
+            <h3 class="font-syne font-bold text-base text-white group-hover:text-orange transition-colors">OPEN SOURCE FORGE</h3>
+            <p class="font-space text-xs text-text-dim mt-1.5 leading-relaxed">
+              Public Rust crates, zero-knowledge tools, and upstream contributions.
+            </p>
+          </div>
+
+          <div class="pillar-card p-5 border border-border-subtle hover:border-white transition-all group bg-surface-card">
+            <div class="font-mono text-xs text-white mb-2">WING_04</div>
+            <h3 class="font-syne font-bold text-base text-white group-hover:text-white transition-colors">KEYNOTES & CONCLAVES</h3>
+            <p class="font-space text-xs text-text-dim mt-1.5 leading-relaxed">
+              Masterclasses and teardowns with industry leads and founders.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Statistical Grid -->
+      <div class="stats-editorial-grid grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-10 border-t border-border-subtle text-center md:text-left">
+        <div class="stat-box">
+          <span class="font-syne font-black text-3xl md:text-5xl text-orange block">480K+</span>
+          <span class="font-mono text-xs text-text-dim uppercase mt-1 block">Lines Deployed</span>
+        </div>
+        <div class="stat-box">
+          <span class="font-syne font-black text-3xl md:text-5xl text-white block">38+</span>
+          <span class="font-mono text-xs text-text-dim uppercase mt-1 block">Podiums Won</span>
+        </div>
+        <div class="stat-box">
+          <span class="font-syne font-black text-3xl md:text-5xl text-amber block">350+</span>
+          <span class="font-mono text-xs text-text-dim uppercase mt-1 block">Active Builders</span>
+        </div>
+        <div class="stat-box">
+          <span class="font-syne font-black text-3xl md:text-5xl text-white block">24</span>
+          <span class="font-mono text-xs text-text-dim uppercase mt-1 block">Live Apps</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== THE 3D ORBITAL EVENT CYLINDER ==================== -->
+    <section id="events" class="events-section px-4 md:px-10 lg:px-16 py-20 border-b border-border-subtle bg-surface-dark/40">
+      
+      <!-- Label Bar -->
+      <div class="section-label-bar flex flex-wrap items-center justify-between gap-4 mb-8 font-mono text-xs text-text-dim">
+        <div class="flex items-center gap-2">
+          <span class="text-orange font-bold">02 //</span>
+          <span class="uppercase tracking-wider text-white">THE 3D EVENT CYLINDER</span>
+        </div>
+        <div class="flex items-center gap-4 text-[11px]">
+          <span id="ring-active-event-name" class="font-bold text-orange">NODE [EV-01]: DEVCLASH</span>
+          <span class="text-text-muted">|</span>
+          <span class="text-text-dim">ANGLE: <span id="ring-angle-readout" class="text-white font-mono">000°</span></span>
+        </div>
+      </div>
+
+      <!-- 3D CYLINDRICAL RING VIEWPORT -->
+      <div id="event-ring-container" class="ring-scene-container p-3 sm:p-6 md:p-8 mb-12">
+        
+        <!-- Header Controls & Precision Tabs -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 mb-6 relative z-20 font-mono text-xs">
+          
+          <!-- Steppers & Orbit Toggle -->
+          <div class="flex items-center justify-between sm:justify-start gap-1.5 sm:gap-2">
+            <button id="ring-prev-btn" class="px-2.5 sm:px-3 py-1.5 bg-surface-dark border border-border-subtle hover:border-orange text-white font-bold transition-all text-[11px] sm:text-xs">
+              ◀ PREV
+            </button>
+            <button id="ring-next-btn" class="px-2.5 sm:px-3 py-1.5 bg-surface-dark border border-border-subtle hover:border-orange text-white font-bold transition-all text-[11px] sm:text-xs">
+              NEXT ▶
+            </button>
+            <button id="ring-auto-btn" class="px-2.5 sm:px-3 py-1.5 bg-surface-dark border border-border-subtle hover:border-orange text-text-dim hover:text-white transition-all text-[11px] sm:text-xs">
+              <span id="ring-auto-status" class="text-orange font-bold">ORBIT [ON]</span>
+            </button>
+          </div>
+
+          <!-- 3 Precision Event Quick Selectors -->
+          <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 max-w-full">
+            <button class="ring-selector-tab active whitespace-nowrap px-2.5 sm:px-3 py-1.5 font-mono text-[11px] sm:text-xs border border-orange text-white transition-all" data-index="0" style="border-color: #FF5500;">
+              <span class="text-orange font-bold">01</span> DEVCLASH 24H
+            </button>
+            <button class="ring-selector-tab whitespace-nowrap px-2.5 sm:px-3 py-1.5 font-mono text-[11px] sm:text-xs border border-border-subtle text-text-dim hover:text-white transition-all" data-index="1">
+              <span class="text-amber font-bold">02</span> DEVTALKS
+            </button>
+            <button class="ring-selector-tab whitespace-nowrap px-2.5 sm:px-3 py-1.5 font-mono text-[11px] sm:text-xs border border-border-subtle text-text-dim hover:text-white transition-all" data-index="2">
+              <span class="text-orange font-bold">03</span> DEVCHEF
+            </button>
+          </div>
+
+          <!-- Drag Hint -->
+          <div class="text-[10px] sm:text-[11px] text-text-muted flex items-center gap-2 hidden lg:flex">
+            <span>DRAG / SCROLL TO ROTATE 3D RING</span>
+            <span class="text-orange">↔</span>
+          </div>
+        </div>
+
+        <!-- 3D Scene Viewport -->
+        <div class="ring-viewport">
+          <div class="orbital-radar-disc">
+            <div class="orbital-radar-disc-inner"></div>
+          </div>
+          <div class="ring-carousel"></div>
+        </div>
+
+        <!-- Quick Action Sub-bar -->
+        <div class="flex flex-wrap items-center justify-between gap-4 mt-6 pt-4 border-t border-border-subtle/80 font-mono text-xs text-text-dim relative z-20">
+          <div class="flex items-center gap-4 text-[11px]">
+            <span class="text-white font-bold">CLICK ANY CARD TO EXPAND FULL DOSSIER</span>
+          </div>
+          <button data-join-trigger class="magnetic-btn brutal-btn-primary px-5 py-2.5 bg-orange text-black font-mono text-xs font-bold hover:bg-white transition-all">
+            <span>REGISTER FOR EVENTS ↗</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== INTERACTIVE DEVKRAFT-CLI TERMINAL ==================== -->
+    <section id="terminal-section" class="terminal-section px-4 md:px-10 lg:px-16 py-20 border-b border-border-subtle bg-surface-dark/60">
+      <div class="section-label-bar flex items-center justify-between mb-10 font-mono text-xs text-text-dim">
+        <div class="flex items-center gap-2">
+          <span class="text-orange font-bold">03 //</span>
+          <span class="uppercase tracking-wider text-white">INTERACTIVE SHELL</span>
+        </div>
+        <span>DEVKRAFT-CLI v2.6.4</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-4">
+          <h2 class="font-syne font-black text-3xl md:text-4xl text-white uppercase leading-tight">
+            DIRECT SYSTEM ACCESS.
+          </h2>
+          <p class="font-space text-xs md:text-sm text-paper-secondary mt-3 leading-relaxed">
+            Query the DevKraft server directly. Inspect routines, telemetry, and club protocols.
+          </p>
+
+          <div class="mt-5 flex flex-col gap-2 font-mono text-xs text-text-dim">
+            <span class="text-white font-bold text-[11px]">QUICK ROUTINES:</span>
+            <div class="flex flex-wrap gap-2">
+              <button class="term-quick-chip px-2.5 py-1 border border-border-subtle hover:border-orange hover:text-orange" data-cmd="help">help</button>
+              <button class="term-quick-chip px-2.5 py-1 border border-border-subtle hover:border-orange hover:text-orange" data-cmd="devclash">devclash</button>
+              <button class="term-quick-chip px-2.5 py-1 border border-border-subtle hover:border-orange hover:text-orange" data-cmd="devtalks">devtalks</button>
+              <button class="term-quick-chip px-2.5 py-1 border border-border-subtle hover:border-orange hover:text-orange" data-cmd="devchef">devchef</button>
+              <button class="term-quick-chip px-2.5 py-1 border border-border-subtle hover:border-orange hover:text-orange" data-cmd="sudo join">sudo join</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-8">
+          <div id="terminal-app" class="terminal-container border-2 border-border-strong bg-obsidian relative">
+            <canvas class="terminal-matrix-canvas absolute inset-0 pointer-events-none hidden z-10"></canvas>
+            
+            <div class="terminal-header px-4 py-2 bg-surface-dark border-b border-border-subtle flex items-center justify-between font-mono text-xs">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-rose-500/80 inline-block"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block"></span>
+                <span class="ml-2 text-text-dim font-bold">cadet@devkraft-pune:~</span>
+              </div>
+              <span class="text-[10px] text-text-muted hidden sm:inline">18.6298° N, 73.7997° E</span>
+            </div>
+
+            <div class="terminal-body p-4 h-64 md:h-72 overflow-y-auto font-mono text-xs text-paper space-y-1.5 relative z-0" data-lenis-prevent>
+              <div class="terminal-output space-y-1.5"></div>
+            </div>
+
+            <form class="terminal-form px-4 py-2.5 bg-surface-dark/90 border-t border-border-subtle flex items-center gap-2 font-mono text-xs">
+              <span class="text-orange font-bold">cadet@devkraft:~$</span>
+              <input type="text" class="terminal-input flex-1 bg-transparent text-white focus:outline-none placeholder:text-text-muted" placeholder="Type 'help', 'devclash', 'sudo join'..." autocomplete="off" spellcheck="false" />
+              <button type="submit" class="text-xs text-orange font-bold hover:underline px-2 py-1">RUN ↵</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== BRUTALIST 3D CTA SECTION ==================== -->
+    <section class="cta-section px-4 sm:px-8 md:px-10 lg:px-16 py-16 sm:py-24 border-b border-border-subtle bg-surface-dark relative overflow-hidden text-center">
+      
+      <!-- Radial Ambient Lighting -->
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,85,0,0.12),transparent_70%)] pointer-events-none"></div>
+
+      <div class="max-w-4xl mx-auto relative z-10">
+        
+        <div class="inline-flex items-center gap-2.5 mb-5 px-3 py-1 border border-border-subtle bg-obsidian text-[11px] sm:text-xs">
+          <span class="w-2 h-2 rounded-full bg-orange animate-ping"></span>
+          <span class="text-orange font-mono font-bold uppercase tracking-wider">
+            // CADET_ONBOARDING_ACTIVE
+          </span>
+        </div>
+
+        <h2 class="font-syne font-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white uppercase tracking-tight leading-[0.9] sm:leading-[0.88] select-none">
+          STOP TALKING.<br/>
+          <span class="text-transparent stroke-white hover:text-orange hover:stroke-transparent transition-all">START</span> <span class="text-orange underline decoration-2 sm:decoration-4 underline-offset-4 sm:underline-offset-8">BUILDING</span>.
+        </h2>
+
+        <p class="font-space text-xs sm:text-sm md:text-base text-paper-secondary mt-5 sm:mt-6 max-w-xl mx-auto leading-relaxed px-2">
+          Recruitment is open across Systems, Brutalist UI, AI Engineering, and Competitive Algorithms.
+        </p>
+
+        <!-- Interactive Action Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-6 sm:mt-8 w-full max-w-md sm:max-w-none mx-auto">
+          <button data-join-trigger class="magnetic-btn brutal-btn-primary w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-orange text-black font-mono text-xs font-bold hover:bg-white transition-all flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(255,85,0,0.35)]">
+            <span>SUBMIT APPLICATION ↗</span>
+          </button>
+          <a href="#events" data-event-trigger="devclash" class="magnetic-btn brutal-btn-outline w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 border-2 border-border-strong text-white font-mono text-xs font-bold hover:border-orange hover:text-orange transition-all flex items-center justify-center">
+            <span>REGISTER FOR DEVCLASH 24H</span>
+          </a>
+        </div>
+
+        <!-- Micro Telemetry Row -->
+        <div class="flex flex-wrap items-center justify-center gap-8 mt-12 pt-6 border-t border-border-subtle/70 font-mono text-xs text-text-dim">
+          <div>
+            <span class="text-text-muted text-[10px] block">RECRUITMENT</span>
+            <span class="text-white font-bold">OPEN TO ALL CADETS</span>
+          </div>
+          <div class="hud-divider hidden sm:inline">/</div>
+          <div>
+            <span class="text-text-muted text-[10px] block">PREREQUISITE</span>
+            <span class="text-orange font-bold">HIGH CURIOSITY</span>
+          </div>
+          <div class="hud-divider hidden sm:inline">/</div>
+          <div>
+            <span class="text-text-muted text-[10px] block">NODE</span>
+            <span class="text-white font-bold">DR. DYPIT PUNE</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== BRUTALIST FOOTER ==================== -->
+  <footer class="footer-section px-4 md:px-10 lg:px-16 py-14 bg-obsidian border-t border-border-subtle font-mono text-xs text-text-dim relative z-20">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-border-subtle">
+      
+      <div class="md:col-span-5">
+        <div class="font-syne font-black text-xl text-white mb-2">DEVKRAFT®</div>
+        <p class="text-text-dim text-xs leading-relaxed max-w-sm">
+          Technical Collective • Dr. D. Y. Patil Institute of Technology, Pimpri, Pune. Code is the medium. Building is the culture.
+        </p>
+        <div class="mt-3 text-[11px] text-text-muted">
+          PIMPRI • PUNE • MAHARASHTRA 411018
+        </div>
+      </div>
+
+      <div class="md:col-span-2">
+        <span class="text-white font-bold block mb-2.5">ROUTINES</span>
+        <ul class="space-y-1.5">
+          <li><a href="#manifesto" class="hover:text-orange">Manifesto</a></li>
+          <li><a href="#events" data-event-trigger="devclash" class="hover:text-orange">DevClash 24H</a></li>
+          <li><a href="#events" data-event-trigger="devtalks" class="hover:text-orange">DevTalks</a></li>
+          <li><a href="#events" data-event-trigger="devchef" class="hover:text-orange">DevChef Arena</a></li>
+          <li><a href="#terminal-section" class="hover:text-orange">Terminal Shell</a></li>
+        </ul>
+      </div>
+
+      <div class="md:col-span-2">
+        <span class="text-white font-bold block mb-2.5">NETWORK</span>
+        <ul class="space-y-1.5">
+          <li><a href="https://github.com" target="_blank" class="hover:text-orange">GitHub ↗</a></li>
+          <li><a href="https://discord.com" target="_blank" class="hover:text-orange">Discord ↗</a></li>
+          <li><a href="https://linkedin.com" target="_blank" class="hover:text-orange">LinkedIn ↗</a></li>
+          <li><a href="https://instagram.com" target="_blank" class="hover:text-orange">Instagram ↗</a></li>
+        </ul>
+      </div>
+
+      <div class="md:col-span-3">
+        <span class="text-white font-bold block mb-2.5">INSTITUTION</span>
+        <div class="text-[11px] leading-relaxed text-text-muted">
+          Dr. D. Y. Patil Institute of Technology<br/>
+          Department of Computer Engineering & IT<br/>
+          Affiliated to SPPU, Pune
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-4 pt-6 text-[11px]">
+      <div>
+        © 2026 DEVKRAFT COLLECTIVE • DR. DYPIT PUNE.
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="#top" class="text-orange hover:underline">BACK TO TOP ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- 1. EVENT DETAIL MODAL -->
+  <div id="event-modal" class="modal-backdrop" data-lenis-prevent>
+    <div class="modal-dialog max-w-2xl">
+      <div class="modal-header-bar">
+        <span class="modal-tag">// EVENT_DOSSIER_VIEWER</span>
+        <button id="close-event-modal" class="modal-close-btn" aria-label="Close modal">✕</button>
+      </div>
+      <div id="event-modal-content" class="modal-inner-scroll" data-lenis-prevent></div>
+    </div>
+  </div>
+
+  <!-- 2. CADET JOIN MODAL -->
+  <div id="join-modal" class="modal-backdrop" data-lenis-prevent>
+    <div class="modal-dialog max-w-xl">
+      <div class="modal-header-bar">
+        <span class="modal-tag">// CADET_INDUCTION_PORTAL</span>
+        <button id="close-join-modal" class="modal-close-btn" aria-label="Close modal">✕</button>
+      </div>
+      <div class="modal-inner-scroll p-6" data-lenis-prevent>
+        <div class="mb-5">
+          <h2 class="font-syne font-black text-2xl text-white uppercase">JOIN THE COLLECTIVE</h2>
+          <p class="font-mono text-xs text-text-dim mt-1">Cadet Recruitment • Dr. DYPIT Pune</p>
+        </div>
+
+        <form id="cadet-join-form" class="space-y-3.5 font-mono text-xs">
+          <div>
+            <label class="block text-text-dim mb-1 font-bold">FULL NAME</label>
+            <input type="text" required class="brutal-input w-full p-2.5 bg-surface-card border border-border-subtle text-white focus:border-orange focus:outline-none" placeholder="e.g. Atharva Joshi" />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-text-dim mb-1 font-bold">ROLL NO / PRN</label>
+              <input type="text" required class="brutal-input w-full p-2.5 bg-surface-card border border-border-subtle text-white focus:border-orange focus:outline-none" placeholder="DYPIT-2024-XXXX" />
+            </div>
+            <div>
+              <label class="block text-text-dim mb-1 font-bold">YEAR</label>
+              <select required class="brutal-input w-full p-2.5 bg-surface-card border border-border-subtle text-white focus:border-orange focus:outline-none">
+                <option value="FE">FE (First Year)</option>
+                <option value="SE">SE (Second Year)</option>
+                <option value="TE">TE (Third Year)</option>
+                <option value="BE">BE (Final Year)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-text-dim mb-1 font-bold">PRIMARY TRACK</label>
+            <select required class="brutal-input w-full p-2.5 bg-surface-card border border-border-subtle text-white focus:border-orange focus:outline-none">
+              <option value="SYSTEMS">Systems & Distributed Backend (Rust/Go/C++)</option>
+              <option value="AI">AI Agents & Local LLM Quantization</option>
+              <option value="DEVCHEF">Competitive DSA & Algorithmic Gauntlets</option>
+              <option value="FRONTEND">Creative Web & Brutalist UI</option>
+              <option value="SECURITY">Security, CTFs & Smart Contract Audit</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-text-dim mb-1 font-bold">GITHUB / PORTFOLIO URL</label>
+            <input type="url" required class="brutal-input w-full p-2.5 bg-surface-card border border-border-subtle text-white focus:border-orange focus:outline-none" placeholder="https://github.com/yourhandle" />
+          </div>
+
+          <div>
+            <label class="block text-text-dim mb-1 font-bold">WHAT DID YOU BUILD / BREAK RECENTLY?</label>
+            <textarea rows="2" required class="brutal-input w-full p-2.5 bg-surface-card border border-border-subtle text-white focus:border-orange focus:outline-none" placeholder="Be direct. What tech stack, what failed, and how you solved it?"></textarea>
+          </div>
+
+          <button type="submit" class="brutal-btn-primary w-full py-3.5 bg-orange text-black font-mono text-xs font-bold hover:bg-white transition-all mt-2">
+            <span>TRANSMIT APPLICATION ⚡</span>
+          </button>
+        </form>
+
+        <div id="join-success-state" class="hidden text-center py-8">
+          <div class="text-4xl text-orange mb-2">✓</div>
+          <h3 class="font-syne font-bold text-2xl text-white">APPLICATION RECEIVED</h3>
+          <p class="font-mono text-xs text-text-dim mt-2 leading-relaxed">
+            Your telemetry has been committed to the DevKraft queue.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
