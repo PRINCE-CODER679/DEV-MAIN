@@ -1,12 +1,14 @@
 // Interactive UI controller, Kinetic Typography, Modals, Audio triggers & Countdowns
 import { sound } from './audio.js';
 import { EVENTS_DATA } from './projects-data.js';
+import { toggleGlobalMatrix } from './canvas.js';
 import confetti from 'canvas-confetti';
 
 export function initInteractions() {
   initClock();
   initPreloader();
   initAudioToggle();
+  initMatrixHUDToggle();
   initKineticScramble();
   initMagneticElements();
   initCountdown();
@@ -82,6 +84,26 @@ function initAudioToggle() {
       statusText.style.color = isMuted ? 'var(--text-dim)' : 'var(--orange)';
     }
     toggleBtn.classList.toggle('active', !isMuted);
+  });
+}
+
+function initMatrixHUDToggle() {
+  const matrixBtn = document.getElementById('matrix-toggle-hud');
+  if (!matrixBtn) return;
+
+  matrixBtn.addEventListener('click', () => {
+    sound.playWarp();
+    const isActive = toggleGlobalMatrix();
+    matrixBtn.classList.toggle('active', isActive);
+    if (isActive) {
+      matrixBtn.style.borderColor = 'var(--orange)';
+      matrixBtn.style.color = '#FFFFFF';
+      matrixBtn.style.background = 'rgba(255, 85, 0, 0.18)';
+    } else {
+      matrixBtn.style.borderColor = '';
+      matrixBtn.style.color = '';
+      matrixBtn.style.background = '';
+    }
   });
 }
 

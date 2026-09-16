@@ -107,10 +107,20 @@
       <div id="pune-clock" class="text-orange font-bold">--:--:-- IST</div>
     </div>
 
-    <!-- Navigation & Audio Control -->
-    <div class="flex items-center gap-2 sm:gap-3 md:gap-5">
+    <!-- Navigation & Audio / Matrix Control -->
+    <div class="flex items-center gap-2 sm:gap-3 md:gap-4">
+      <button id="matrix-toggle-hud" class="hud-btn flex items-center gap-1.5 font-mono text-[10px] sm:text-xs px-2 sm:px-2.5 py-1.5 border border-border-subtle hover:border-orange text-text-dim hover:text-white transition-all">
+        <span class="text-orange">⚡</span>
+        <span class="hidden sm:inline">MATRIX [M]</span>
+      </button>
+
       <button id="audio-toggle-btn" class="hud-btn flex items-center gap-1.5 sm:gap-2 font-mono text-[11px] sm:text-xs px-2 sm:px-2.5 py-1.5 border border-border-subtle hover:border-orange transition-all">
-        <span>🔊</span>
+        <div class="eq-bar-container">
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+        </div>
         <span id="audio-status" class="hidden sm:inline text-text-dim">MUTE [OFF]</span>
       </button>
 
@@ -120,7 +130,7 @@
         <a href="#terminal-section" class="nav-link text-text-dim hover:text-white transition-colors" data-scramble>TERMINAL</a>
       </nav>
 
-      <button data-join-trigger class="magnetic-btn brutal-btn-sm font-mono text-[11px] sm:text-xs font-bold bg-orange text-black px-3 sm:px-4 py-1.5 sm:py-2 hover:bg-white transition-all">
+      <button data-join-trigger class="magnetic-btn brutal-btn-sm font-mono text-[11px] sm:text-xs font-bold bg-orange text-black px-3 sm:px-4 py-1.5 sm:py-2 hover:bg-white transition-all shadow-[0_0_15px_rgba(255,85,0,0.4)]">
         <span>JOIN ↗</span>
       </button>
     </div>
@@ -144,10 +154,10 @@
         </div>
       </div>
 
-      <!-- Centerpiece Kinetic Oversized Typography -->
+      <!-- Centerpiece Kinetic Oversized Typography with Holographic Glitch -->
       <div class="hero-typography-container my-auto py-8">
         <div class="hero-giant-text-wrapper">
-          <h1 class="hero-giant-title font-syne font-black uppercase leading-[0.82] tracking-tighter select-none">
+          <h1 class="hero-giant-title font-syne font-black uppercase leading-[0.82] tracking-tighter select-none glitch-hover cursor-pointer" title="Click to trigger kinetic burst">
             <span class="title-line block text-white hover:text-orange transition-colors" data-scramble>DEV</span>
             <span class="title-line block text-transparent stroke-white hover:text-white hover:stroke-transparent transition-all flex items-baseline gap-2 md:gap-4">
               <span data-scramble>KRAFT</span>
@@ -266,38 +276,46 @@
           </div>
         </div>
 
-        <!-- 4 Asymmetric Pillars -->
+        <!-- 4 Asymmetric Pillars with Laser Beam Borders -->
         <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div class="pillar-card p-5 border border-border-subtle hover:border-orange transition-all group bg-surface-card">
-            <div class="font-mono text-xs text-orange mb-2">WING_01</div>
-            <h3 class="font-syne font-bold text-base text-white group-hover:text-orange transition-colors">PRODUCT ENGINEERING</h3>
-            <p class="font-space text-xs text-text-dim mt-1.5 leading-relaxed">
-              Shipping distributed apps, WebGL graphics, and AI agent pipelines.
-            </p>
+          <div class="pillar-card beam-card-container p-[1px] group">
+            <div class="beam-card-inner p-5 h-full transition-all border border-border-subtle group-hover:border-orange/60">
+              <div class="font-mono text-xs text-orange mb-2">WING_01</div>
+              <h3 class="font-syne font-bold text-base text-white group-hover:text-orange transition-colors">PRODUCT ENGINEERING</h3>
+              <p class="font-space text-xs text-text-dim mt-1.5 leading-relaxed">
+                Shipping distributed apps, WebGL graphics, and AI agent pipelines.
+              </p>
+            </div>
           </div>
 
-          <div class="pillar-card p-5 border border-border-subtle hover:border-amber transition-all group bg-surface-card">
-            <div class="font-mono text-xs text-amber mb-2">WING_02</div>
-            <h3 class="font-syne font-bold text-base text-white group-hover:text-amber transition-colors">ALGORITHMIC COMBAT</h3>
-            <p class="font-space text-xs text-text-dim mt-1.5 leading-relaxed">
-              Weekly competitive DSA duels, graph topologies, and speed rounds.
-            </p>
+          <div class="pillar-card beam-card-container p-[1px] group">
+            <div class="beam-card-inner p-5 h-full transition-all border border-border-subtle group-hover:border-amber/60">
+              <div class="font-mono text-xs text-amber mb-2">WING_02</div>
+              <h3 class="font-syne font-bold text-base text-white group-hover:text-amber transition-colors">ALGORITHMIC COMBAT</h3>
+              <p class="font-space text-xs text-text-dim mt-1.5 leading-relaxed">
+                Weekly competitive DSA duels, graph topologies, and speed rounds.
+              </p>
+            </div>
           </div>
 
-          <div class="pillar-card p-5 border border-border-subtle hover:border-orange transition-all group bg-surface-card">
-            <div class="font-mono text-xs text-orange mb-2">WING_03</div>
-            <h3 class="font-syne font-bold text-base text-white group-hover:text-orange transition-colors">OPEN SOURCE FORGE</h3>
-            <p class="font-space text-xs text-text-dim mt-1.5 leading-relaxed">
-              Public Rust crates, zero-knowledge tools, and upstream contributions.
-            </p>
+          <div class="pillar-card beam-card-container p-[1px] group">
+            <div class="beam-card-inner p-5 h-full transition-all border border-border-subtle group-hover:border-orange/60">
+              <div class="font-mono text-xs text-orange mb-2">WING_03</div>
+              <h3 class="font-syne font-bold text-base text-white group-hover:text-orange transition-colors">OPEN SOURCE FORGE</h3>
+              <p class="font-space text-xs text-text-dim mt-1.5 leading-relaxed">
+                Public Rust crates, zero-knowledge tools, and upstream contributions.
+              </p>
+            </div>
           </div>
 
-          <div class="pillar-card p-5 border border-border-subtle hover:border-white transition-all group bg-surface-card">
-            <div class="font-mono text-xs text-white mb-2">WING_04</div>
-            <h3 class="font-syne font-bold text-base text-white group-hover:text-white transition-colors">KEYNOTES & CONCLAVES</h3>
-            <p class="font-space text-xs text-text-dim mt-1.5 leading-relaxed">
-              Masterclasses and teardowns with industry leads and founders.
-            </p>
+          <div class="pillar-card beam-card-container p-[1px] group">
+            <div class="beam-card-inner p-5 h-full transition-all border border-border-subtle group-hover:border-white/60">
+              <div class="font-mono text-xs text-white mb-2">WING_04</div>
+              <h3 class="font-syne font-bold text-base text-white group-hover:text-white transition-colors">KEYNOTES & CONCLAVES</h3>
+              <p class="font-space text-xs text-text-dim mt-1.5 leading-relaxed">
+                Masterclasses and teardowns with industry leads and founders.
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -472,7 +490,7 @@
           </span>
         </div>
 
-        <h2 class="font-syne font-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white uppercase tracking-tight leading-[0.9] sm:leading-[0.88] select-none">
+        <h2 class="font-syne font-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white uppercase tracking-tight leading-[0.9] sm:leading-[0.88] select-none glitch-hover cursor-pointer" title="Click to trigger kinetic burst">
           STOP TALKING.<br/>
           <span class="text-transparent stroke-white hover:text-orange hover:stroke-transparent transition-all">START</span> <span class="text-orange underline decoration-2 sm:decoration-4 underline-offset-4 sm:underline-offset-8">BUILDING</span>.
         </h2>
