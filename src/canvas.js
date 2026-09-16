@@ -34,6 +34,8 @@ export function initBackgroundCanvas(canvasId = 'bg-canvas') {
   }
 
   window.addEventListener('resize', resize);
+  
+  // Desktop mouse
   window.addEventListener('mousemove', (e) => {
     mouse.targetX = e.clientX;
     mouse.targetY = e.clientY;
@@ -42,6 +44,30 @@ export function initBackgroundCanvas(canvasId = 'bg-canvas') {
   window.addEventListener('mouseleave', () => {
     mouse.targetX = -1000;
     mouse.targetY = -1000;
+  });
+
+  // Mobile touch
+  window.addEventListener('touchstart', (e) => {
+    if (e.touches && e.touches[0]) {
+      mouse.targetX = e.touches[0].clientX;
+      mouse.targetY = e.touches[0].clientY;
+      mouse.x = mouse.targetX;
+      mouse.y = mouse.targetY;
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchmove', (e) => {
+    if (e.touches && e.touches[0]) {
+      mouse.targetX = e.touches[0].clientX;
+      mouse.targetY = e.touches[0].clientY;
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchend', () => {
+    setTimeout(() => {
+      mouse.targetX = -1000;
+      mouse.targetY = -1000;
+    }, 400);
   });
 
   resize();
